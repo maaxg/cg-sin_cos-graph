@@ -1,6 +1,12 @@
 ## Getting Started
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This project is a simple JFrame "animation" experiment.
+It has the propoursal to understand and plot the sin and cos curve in a line graph.
+
+
+## Example
+![Sin-cos](https://user-images.githubusercontent.com/49838612/134812761-bc229c5a-6f0c-4d4a-afb8-2ad7292b3c6c.gif)
+
 
 ## Folder Structure
 
@@ -10,9 +16,3 @@ The workspace contains two folders by default, where:
 - `lib`: the folder to maintain dependencies
 
 Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
