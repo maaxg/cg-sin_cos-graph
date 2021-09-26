@@ -12,56 +12,93 @@ import javax.swing.Timer;
 
 
 public class GraphLine extends JPanel {
+    private static final double 
+        WIDTH = 640, 
+        HEIGHT = 480, 
+        AMPLITUDE = HEIGHT / 12;
 
-    private static final double WIDTH = 640, HEIGHT = 480, AMPLITUDE = HEIGHT / 3;
-    private static final int MARGIN = 32, DOT_SIZE = 2, SPEED = 10;
+    private static final int 
+        MARGIN = 32, 
+        DOT_SIZE = 2, 
+        SPEED = 10;
 
     private double x = MARGIN;
-    private final double y = HEIGHT / 2;
+
+    private final double 
+        sinY = HEIGHT / 2, 
+        cosY = HEIGHT / 2.10;
+
     private final int dX = 1;
 
 
-    private final List<Point2D.Double> points;
+    private final List<Point2D.Double> sinPoints;
+    private final List<Point2D.Double> cosPoints;
     private final Timer timer;
 
     public GraphLine(){
         setPreferredSize(new Dimension((int) WIDTH, (int) HEIGHT));
-        points = new ArrayList<>();
-        timer = new Timer(SPEED, e -> addPoints()); 
+        sinPoints = new ArrayList<>();
+        cosPoints = new ArrayList<>();
+        timer = new Timer(SPEED, event -> {addSinPoints(); addCosPoints();}); 
         timer.start();
     }
 
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
-
- 
-        g2.setColor(Color.RED);
-        // draw my sin elipse
-        for(Point2D.Double p : points){
-            Shape point = new Ellipse2D.Double(p.getX(), p.getY(), DOT_SIZE, DOT_SIZE);
-            g2.draw(point);
-        }
-        // draw x and y line
+        Graphics2D g2sin = (Graphics2D)g;
+        Graphics2D g2cos = (Graphics2D)g;
+        
+        
+        sinDraw(g2sin);
+        cosDraw(g2cos);
+        
         drawX(g);
         drawY(g);
-  
-        // set graph color
+        
         g.setColor(Color.BLUE);
-        // set value in x and y
+        
         drawValuesX(g);
         drawValuesY(g); 
-
-
-    
+        
+ 
     }
 
-    private void addPoints() {
+    private void cosDraw(Graphics2D g2cos){
+        g2cos.setColor(Color.GREEN);
+        // draw my sin elipse
+        for(Point2D.Double p : cosPoints){
+            Shape point = new Ellipse2D.Double(p.getX(), p.getY(), DOT_SIZE, DOT_SIZE);
+            g2cos.draw(point);
+        }
 
-        double angle = - Math.PI + 2 * Math.PI * ((x-MARGIN)/(WIDTH - 2 * MARGIN));//angle in radians
-        double newY = y + AMPLITUDE  * Math.sin(angle);
-        points.add(new Point2D.Double(x, newY));
+    }
+
+    private void sinDraw(Graphics2D g2sin){
+        g2sin.setColor(Color.RED);
+        // draw my sin elipse
+        for(Point2D.Double p : sinPoints) {
+            Shape point = new Ellipse2D.Double(p.getX(), p.getY(), DOT_SIZE, DOT_SIZE);
+            g2sin.draw(point);
+        }
+
+    }
+
+    private void addCosPoints(){
+        double angle = - Math.PI + 2 * Math.PI * (( x - MARGIN )/( WIDTH - 11 * MARGIN));//angle in radians
+        double newY = cosY + AMPLITUDE  * Math.cos(angle);
+        cosPoints.add(new Point2D.Double(x, newY));
+        x += dX;
+        if(x >= WIDTH - MARGIN) {
+            timer.stop();
+        }
+        repaint();
+    }
+
+    private void addSinPoints() {
+        double angle = - Math.PI + 2 * Math.PI * (( x - MARGIN )/( WIDTH - 11 * MARGIN));//angle in radians
+        double newY = sinY + AMPLITUDE  * Math.sin(angle);
+        sinPoints.add(new Point2D.Double(x, newY));
         x += dX;
         if(x >= WIDTH - MARGIN) {
             timer.stop();
@@ -95,18 +132,5 @@ public class GraphLine extends JPanel {
             else g.drawString(String.valueOf(i), 30, position += value);
         }
     }
-
-    /*
-    g.drawLine(30, 432, 40, 432); 
-      g.drawLine(30, 384, 40, 384); 
-      g.drawLine(30, 336, 40, 336); 
-      g.drawLine(30, 288, 40, 288); 
-
-      g.drawLine(30, 192, 40, 192); 
-      g.drawLine(30, 144, 40, 144); 
-      g.drawLine(30, 96, 40, 96); 
-      g.drawLine(30, 48, 40, 48); 
-    
-    */
 
 }
