@@ -30,7 +30,6 @@ public class GraphLine extends JPanel {
 
     private final int dX = 1;
 
-
     private final List<Point2D.Double> sinPoints;
     private final List<Point2D.Double> cosPoints;
     private final Timer timer;
@@ -66,44 +65,48 @@ public class GraphLine extends JPanel {
 
     private void cosDraw(Graphics2D g2cos){
         g2cos.setColor(Color.GREEN);
-        // draw my sin elipse
+        // draw my cos curve
         for(Point2D.Double p : cosPoints){
-            Shape point = new Ellipse2D.Double(p.getX(), p.getY(), DOT_SIZE, DOT_SIZE);
-            g2cos.draw(point);
+            g2cos.draw(getPoints(p));
         }
-
     }
 
     private void sinDraw(Graphics2D g2sin){
         g2sin.setColor(Color.RED);
-        // draw my sin elipse
+        // draw my sin curve
         for(Point2D.Double p : sinPoints) {
-            Shape point = new Ellipse2D.Double(p.getX(), p.getY(), DOT_SIZE, DOT_SIZE);
-            g2sin.draw(point);
+            g2sin.draw(getPoints(p));
         }
 
     }
 
     private void addCosPoints(){
-        double angle = - Math.PI + 2 * Math.PI * (( x - MARGIN )/( WIDTH - 11 * MARGIN));//angle in radians
-        double newY = cosY + AMPLITUDE  * Math.cos(angle);
+        double newY = cosY + AMPLITUDE  * Math.cos(getAngle());
         cosPoints.add(new Point2D.Double(x, newY));
-        x += dX;
-        if(x >= WIDTH - MARGIN) {
-            timer.stop();
-        }
+        timerCondition();
         repaint();
     }
 
     private void addSinPoints() {
-        double angle = - Math.PI + 2 * Math.PI * (( x - MARGIN )/( WIDTH - 11 * MARGIN));//angle in radians
-        double newY = sinY + AMPLITUDE  * Math.sin(angle);
+        double newY = sinY + AMPLITUDE  * Math.sin(getAngle());
         sinPoints.add(new Point2D.Double(x, newY));
+        timerCondition();
+        repaint();
+    }
+
+    private Shape getPoints(Point2D.Double p){
+        return new Ellipse2D.Double(p.getX(), p.getY(), DOT_SIZE, DOT_SIZE);
+    }
+
+    private void timerCondition(){
         x += dX;
         if(x >= WIDTH - MARGIN) {
             timer.stop();
         }
-        repaint();
+    }
+
+    private double getAngle(){
+        return - Math.PI + 2 * Math.PI * (( x - MARGIN )/( WIDTH - 11 * MARGIN));
     }
 
     private void drawX(Graphics g){
