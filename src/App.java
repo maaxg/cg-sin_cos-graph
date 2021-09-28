@@ -1,4 +1,5 @@
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -11,7 +12,7 @@ public class App {
         GraphLine graphLine = new GraphLine();
        
         jframe.add(graphLine);
-        jframe.setDefaultCloseOperation(3);
+        jframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         jframe.setSize(640, 480);
 
